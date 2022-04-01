@@ -19,9 +19,23 @@ func (r *WalletRepositoryDB) GetBalance(id int64) (resource.Wallet, error) {
 func (r *WalletRepositoryDB) Credit(id int64, amount string) (resource.Wallet, error) {
 	var wallet resource.Wallet
 	_ = r.db.Where("id = ?", id).First(&wallet)
-	aDec, _ := decimal.NewFromString(amount)
-	bDec, _ := decimal.NewFromString(wallet.Balance)
-	wallet.Balance = aDec.Add(bDec).String()
+	amt, _ := decimal.NewFromString(amount)
+	currBal, _ := decimal.NewFromString(wallet.Balance)
+	wallet.Balance = amt.Add(currBal).String()
+	err := r.db.Save(&wallet)
+	if err != nil {
+		logger.Error(err.Error)
+		return wallet, err.Error
+	}
+	return wallet, nil
+}
+
+func (r *WalletRepositoryDB) Debit(id int64, amount string) (resource.Wallet, error) {
+	var wallet resource.Wallet
+	_ = r.db.Where("id = ?", id).First(&wallet)
+	amt, _ := decimal.NewFromString(amount)
+	currBal, _ := decimal.NewFromString(wallet.Balance)
+	wallet.Balance = currBal.Sub(amt).String()
 	err := r.db.Save(&wallet)
 	if err != nil {
 		logger.Error(err.Error)
