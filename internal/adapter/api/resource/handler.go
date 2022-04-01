@@ -38,9 +38,19 @@ func (s *HTTPHandler) CreditsWalletByID() gin.HandlerFunc {
 			})
 			return
 		}
+		// check if amount is less than zero
+		amount, _ := strconv.ParseFloat(w2.Amount, 64)
+		if amount <= 0 {
+			logger.Error("Amount must be greater than zero")
+			c.JSON(400, gin.H{
+				"Error": "Amount must be greater than zero",
+			})
+			return
+		}
+
 		wallet, err := s.walletService.Credit(int64(ID), w2.Amount)
 		if err != nil {
-			logger.Error(err)
+			logger.Error("Error while crediting wallet")
 			c.JSON(400, gin.H{
 				"error": err.Error(),
 			})
@@ -66,9 +76,30 @@ func (s *HTTPHandler) DebitsWalletByID() gin.HandlerFunc {
 			})
 			return
 		}
+
+		// check if amount is less than zero
+		amount, _ := strconv.ParseFloat(w2.Amount, 64)
+		if amount <= 0 {
+			logger.Error("Amount must be greater than zero")
+			c.JSON(400, gin.H{
+				"Error": "Amount must be greater than zero",
+			})
+			return
+		}
+
+		currentBal, _ := s.walletService.GetBalance(int64(ID))
+		bal, _ := strconv.ParseFloat(currentBal.Balance, 64)
+		if bal < amount {
+			logger.Error("Your wallet balance has insufficient funds")
+			c.JSON(400, gin.H{
+				"Error": "Your wallet balance has insufficient funds",
+			})
+			return
+		}
+
 		wallet, err := s.walletService.Debit(int64(ID), w2.Amount)
 		if err != nil {
-			logger.Error(err)
+			logger.Error("Error debiting wallet")
 			c.JSON(400, gin.H{
 				"error": err.Error(),
 			})
