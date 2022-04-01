@@ -6,5 +6,6 @@
 # JetBrains IDE
 .idea/
 
+**/*_mock.go
 
 
