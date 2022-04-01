@@ -49,11 +49,11 @@ http://localhost:{port}/api/v1/wallets/{wallet_id}/balance
 3. To credit money on a given wallet id
    , use Postman to make a POST request to the following URL:
 ```
-http://localhost:{port}/api/v1/wallets/{wallet_id}/balance
+http://localhost:{port}/api/v1/wallets/{wallet_id}/credit
 ```
-4. To debit money from a given wallet id, use Postman to make a GET request to the following URL:
+4. To debit money from a given wallet id, use Postman to make a POST request to the following URL:
 ```
-http://localhost:{port}/api/v1/wallets/{wallet_id}/balance
+http://localhost:{port}/api/v1/wallets/{wallet_id}/debit
 
 ```
 
