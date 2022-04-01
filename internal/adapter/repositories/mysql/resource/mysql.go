@@ -1,23 +1,27 @@
 package resource
 
 import (
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
+	"os"
 )
 
 type WalletRepositoryDB struct {
 	db *gorm.DB
 }
 
-const DB_USERNAME = "root"
-const DB_PASSWORD = "12345678"
-const DB_NAME = "wallet"
-const DB_HOST = "127.0.0.1"
-const DB_PORT = "3306"
+var err = godotenv.Load("quik-wallet.env")
+
+var DbUsername = os.Getenv("DB_USER")
+var DbPassword = os.Getenv("DB_PASS")
+var DbName = os.Getenv("DB_NAME")
+var DbHost = os.Getenv("DB_HOST")
+var DbPort = os.Getenv("DB_PORT")
 
 func NewWalletRepositoryDB() *WalletRepositoryDB {
-	dsn := DB_USERNAME + ":" + DB_PASSWORD + "@tcp" + "(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME + "?" + "charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := DbUsername + ":" + DbPassword + "@tcp" + "(" + DbHost + ":" + DbPort + ")/" + DbName + "?" + "charset=utf8mb4&parseTime=True&loc=Local"
 	client, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
