@@ -3,3 +3,9 @@ mock:
 
 mock-repository:
 	mockgen -source=internal/ports/resource/repository.go -destination=internal/core/services/mock/repository_mock.go -package=services
+
+test:
+	go test -v ./...
+
+run:
+	go run .
