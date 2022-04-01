@@ -22,3 +22,11 @@ func (s *service) GetBalance(walletId int64) (resource.Wallet, error) {
 	}
 	return wallet, nil
 }
+
+func (s *service) Credit(walletId int64, amount string) (resource.Wallet, error) {
+	wallet, err := s.walletRepository.Credit(walletId, amount)
+	if err != nil {
+		return resource.Wallet{}, err
+	}
+	return wallet, nil
+}
