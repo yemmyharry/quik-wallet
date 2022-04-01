@@ -5,7 +5,9 @@ import (
 )
 
 func (s *HTTPHandler) Routes(router *gin.Engine) {
-	apirouter := router.Group("api")
-	apirouter.GET("/wallet/balance", s.GetWalletBalanceByID())
+	apirouter := router.Group("api/v1")
+	apirouter.GET("/wallets/:id/balance", s.GetWalletBalanceByID())
+	apirouter.POST("/wallets/:id/credit", s.CreditsWalletByID())
+	//apirouter.POST("/wallet/debit", s.DebitWalletByID())
 	router.NoRoute(func(c *gin.Context) { c.JSON(404, "no route") })
 }
