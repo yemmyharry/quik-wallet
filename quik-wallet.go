@@ -10,11 +10,10 @@ import (
 
 func main() {
 	router := gin.Default()
-	//router.Use(logger.LoggerToFile())
 	database := resource.NewWalletRepositoryDB()
 	service := services.New(database)
-	handler := adapter.NewHTTPHandler(service, router)
+	handler := adapter.NewHTTPHandler(service)
 	handler.Routes(router)
 	logger.Info("Starting server on port 8080")
-	handler.Route.Run(":8080")
+	router.Run(":8080")
 }
