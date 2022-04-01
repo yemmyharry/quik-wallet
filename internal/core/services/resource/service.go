@@ -30,3 +30,11 @@ func (s *service) Credit(walletId int64, amount string) (resource.Wallet, error)
 	}
 	return wallet, nil
 }
+
+func (s *service) Debit(walletId int64, amount string) (resource.Wallet, error) {
+	wallet, err := s.walletRepository.Debit(walletId, amount)
+	if err != nil {
+		return resource.Wallet{}, err
+	}
+	return wallet, nil
+}
