@@ -4,7 +4,6 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
-	domain "quik-wallet/internal/core/domain/resource"
 )
 
 type WalletRepositoryDB struct {
@@ -23,6 +22,6 @@ func NewWalletRepositoryDB() *WalletRepositoryDB {
 	if err != nil {
 		log.Fatal(err)
 	}
-	client.AutoMigrate(&domain.Wallet{})
+	//client.AutoMigrate(&domain.Wallet{})
 	return &WalletRepositoryDB{client}
 }
